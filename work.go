@@ -4,10 +4,12 @@ package main
 // 使わないモジュールはビルド時にエラーになる
 import (
 	"fmt"
+	"os"
+	"log"
 	"os/user"
+	"strconv"
 	"strings"
 	"time"
-	"strconv"
 )
 
 // 変数は関数外で定義できる
@@ -41,6 +43,14 @@ func incrementGenerator() func() int {
 }
 
 func main() {
+	// deferは関数の最後に実行される
+	// ２回目の出力
+	defer fmt.Println("Hello")
+	// １回目の出力
+	defer func() {
+		fmt.Println("world")
+	}()
+
 	fmt.Println("Hello world!", time.Now())
 	fmt.Println(user.Current())
 	fmt.Println(i)
@@ -97,6 +107,7 @@ func main() {
 	fmt.Println(sum)
 
 	// 無名関数
+	// 並列処理で使われる
 	func(msg string) {
 		fmt.Println(msg)
 	}("John")
@@ -107,4 +118,45 @@ func main() {
 	fmt.Println(counter())
 	fmt.Println(counter())
 	fmt.Println(counter())
+
+	// 可変長引数
+	func(x ...int) {
+		fmt.Println(x)
+	}(1, 2, 3, 4, 5)
+
+	x := []string{"h", "e", "l", "l", "o"}
+	// x := map[string]int{"apple": 100, "banana": 200}
+	for _, v := range x {
+		fmt.Println(v)
+	}
+
+	// ファイル読み込み
+	func() {
+		file, _ := os.Open("./defer.txt")
+		defer file.Close()
+		date := make([]byte, 100)
+		file.Read(date)
+		fmt.Println(string(date))
+	}()
+
+	// ファイル読み込み
+	func () {
+		file, err := os.Open("./noFile.txt") ; if err != nil {
+			log.Fatal(err)
+		}
+		defer file.Close()
+	}()
+
+	// パニックおｔリカバリ
+	// goでは推奨されていない errorハンドリングでで処理することを推奨
+	func () {
+		defer func() {
+			fmt.Println("defer")
+			if x := recover(); x != nil {
+				fmt.Println(x)
+			}
+			fmt.Println("リカバリ")
+		}()
+		panic("Error")
+	}()
 }
