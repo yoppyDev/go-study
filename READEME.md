@@ -16,6 +16,14 @@ https://pkg.go.dev/std
 https://go.dev/ref/spec
 
 
+goroutine
+- fan-out fan-in
+  - fan-out: 複数のgoroutineを起動すること
+  - fan-in: 複数のgoroutineからの結果を受け取ること
+  - channelでパイプラインを持たせたいときに使う
+- 
+
+
 
 コマンド
 - go run [fileName]      ファイルを実行
