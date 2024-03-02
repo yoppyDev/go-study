@@ -41,5 +41,4 @@ batchリポジトリの構成
 └── go.sum                 # 依存関係の整合性を保証するためのチェックサムを提供するファイル
 ```
 
-参考になりそうなディレクトリ構成
-https://github.com/golang-standards/project-layout
+[参考になりそうなディレクトリ構成](https://github.com/golang-standards/project-layout)
